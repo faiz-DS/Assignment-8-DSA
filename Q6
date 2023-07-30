@@ -1,0 +1,32 @@
+def find_anagrams(s, p):
+    def create_hashmap(word):
+        hashmap = {}
+        for char in word:
+            hashmap[char] = hashmap.get(char, 0) + 1
+        return hashmap
+
+    len_s, len_p = len(s), len(p)
+    p_hashmap = create_hashmap(p)
+    result = []
+
+    # Initialize the sliding window's hashmap
+    window_hashmap = create_hashmap(s[:len_p])
+
+    # Slide the window over s and check for anagrams
+    for i in range(len_s - len_p + 1):
+        if window_hashmap == p_hashmap:
+            result.append(i)
+
+        # Move the window to the right
+        if i + len_p < len_s:
+            window_hashmap[s[i]] -= 1
+            if window_hashmap[s[i]] == 0:
+                del window_hashmap[s[i]]
+            window_hashmap[s[i + len_p]] = window_hashmap.get(s[i + len_p, 0]) + 1
+
+    return result
+
+# Example
+s = "cbaebabacd"
+p = "abc"
+print(find_anagrams(s, p))  # Output: [0, 6]

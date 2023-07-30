@@ -1,0 +1,23 @@
+def decode_string(s):
+    stack = []
+    current_str = ""
+    k = 0
+
+    for char in s:
+        if char.isdigit():
+            k = k * 10 + int(char)
+        elif char == "[":
+            stack.append((k, current_str))
+            k = 0
+            current_str = ""
+        elif char == "]":
+            prev_k, prev_str = stack.pop()
+            current_str = prev_str + current_str * prev_k
+        else:
+            current_str += char
+
+    return current_str
+
+# Example
+s = "3[a]2[bc]"
+print(decode_string(s))  # Output: "aaabcbc"

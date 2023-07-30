@@ -1,0 +1,30 @@
+def is_valid(s):
+    stack = []
+    star_stack = []
+
+    for char in s:
+        if char == '(':
+            stack.append(char)
+        elif char == '*':
+            star_stack.append(char)
+        else:  # char == ')'
+            if stack:
+                stack.pop()
+            elif star_stack:
+                star_stack.pop()
+            else:
+                return False
+
+    # At this point, we have handled all closing parentheses, now we need to check for remaining open parentheses.
+    while stack and star_stack:
+        if stack[-1] < star_stack[-1]:
+            stack.pop()
+            star_stack.pop()
+        else:
+            return False
+
+    return len(stack) == 0
+
+# Example
+s = "()"
+print(is_valid(s))  # Output: True
